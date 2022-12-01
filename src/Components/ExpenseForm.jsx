@@ -1,18 +1,21 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { Button, Stack, TextField } from "@mui/material";
-import { ExpenseContext } from "../Context/ExpenseContext";
+import { postExpense } from "../api/componentAction";
 
 export default function ExpenseForm() {
   const [amount, setAmount] = useState("");
   const [date, setDate] = useState("");
   const [remarks, setRemarks] = useState("");
 
-  const { addExpense } = useContext(ExpenseContext);
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    addExpense({ amount, date, remarks });
+    const { data, error } = await postExpense(amount, date, remarks);
+    if (data) {
+      setAmount("");
+      setDate("");
+      setRemarks("");
+    }
   };
   return (
     <Box sx={{ p: 2 }}>

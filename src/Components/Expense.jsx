@@ -2,7 +2,7 @@ import { Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 
-export default function ({ val, total }) {
+export default function Expense({ val, total }) {
   if (total) {
     return (
       <Box
@@ -40,12 +40,12 @@ export default function ({ val, total }) {
       }}
     >
       <Stack direction="row">
-        <Typography>₹ {val?.amount} </Typography> &nbsp;&nbsp; |&nbsp;&nbsp;
+        <Typography>₹ {val?.amount || val?.ammount} </Typography> &nbsp;&nbsp;
+        |&nbsp;&nbsp;
         <Typography>{new Date(val?.date).toDateString()}</Typography>
       </Stack>
       <Stack direction="row">
         <Typography>{val?.remarks} </Typography>
-        {/* <Typography>{new Date(val.date).toDateString()}</Typography> */}
       </Stack>
     </Box>
   );
