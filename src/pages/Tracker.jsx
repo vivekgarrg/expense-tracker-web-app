@@ -1,27 +1,44 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Box from "@mui/material/Box";
 import ExpenseForm from "../Components/ExpenseForm";
 import { CircularProgress, styled, Typography } from "@mui/material";
 import Expense from "../Components/Expense";
 import { useExpenses } from "../api/componentAction";
+import { Link } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import MonthFilter from "../Components/MonthFilter";
 
 export default function Tracker() {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState("");
   const [error, setError] = useState("");
   const [total, setTotal] = useState(0);
+  const [month, setMonth] = useState("");
 
   const { data, isLoading, isError } = useExpenses();
-  console.log(data);
+
+  const monthFiletring = useMemo(() => {
+    return data?.expense.filter((expense) =>
+      expense.date.includes(month.toString())
+    );
+  }, [month, data]);
+
+  const totalValue = useMemo(() => {
+    return expenses.reduce((prev, curr) => prev + parseInt(curr.amount), 0);
+  }, [expenses]);
 
   useEffect(() => {
     if (data) {
       setExpenses(data.expense);
       setTotal(data.total);
     }
+    if (month !== "") {
+      setExpenses(monthFiletring);
+      setTotal(totalValue);
+    }
     setLoading(isLoading);
     setError(isError);
-  }, [data, isLoading, isError]);
+  }, [data, isLoading, isError, monthFiletring, month, totalValue]);
 
   const StyledContainer = styled(Box)(({ theme }) => ({
     width: "100vw",
@@ -74,9 +91,39 @@ export default function Tracker() {
         <Box sx={{ pl: 2, pr: 2 }}>
           <Expense total={total} />
         </Box>
+        <Box
+          sx={{
+            maxWidth: "100%",
+            background: "#ff7043",
+            marginBottom: "1rem",
+            borderRadius: "5px",
+            color: "white",
+            m: 2,
+            p: 2,
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack direction="row">
+            <Typography>Total</Typography>
+            <MonthFilter
+              value={month}
+              onChange={(e) => setMonth(e.target.value)}
+            />
+          </Stack>
+          <Stack direction="row">
+            <Typography>₹ {total} </Typography>
+          </Stack>
+        </Box>
         <Box className="two-1" sx={{ p: 2 }}>
-          {expenses.map((val, ind) => (
-            <Expense key={ind} val={val} />
+          {expenses.map((val) => (
+            <Link
+              key={val._id}
+              style={{ textDecoration: "none" }}
+              to={`expense/${val._id}`}
+            >
+              <Expense val={val} />
+            </Link>
           ))}
         </Box>
       </Box>

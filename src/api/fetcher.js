@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const baseUrl = "http://localhost:3000/api";
+export const baseUrl = "http://localhost:3002/api";
 
 //for get request
 export const getFetcher = (url) =>
