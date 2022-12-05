@@ -11,7 +11,6 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 
 import { visuallyHidden } from "@mui/utils";
-import { Link } from "react-router-dom";
 import EditButton from "./EditButton";
 import { ExpenseContext } from "../Context/ExpenseContext";
 
@@ -174,16 +173,10 @@ export default function ExpenseTable({ rows }) {
                       key={row.name}
                     >
                       <TableCell>{new Date(row.date).toDateString()}</TableCell>
-                      <TableCell sx={{ fontWeight: "600" }}>
-                        <Link
-                          style={{
-                            textDecoration: "none",
-                            color: "#6676A8",
-                          }}
-                          to={`expense/${row._id}`}
-                        >
-                          ₹ {row.amount}
-                        </Link>
+                      <TableCell
+                        sx={{ fontWeight: "600", color: "primary.main" }}
+                      >
+                        ₹ {row.amount}
                       </TableCell>
                       <TableCell sx={{ textTransform: "uppercase" }}>
                         {row.payment_mode}

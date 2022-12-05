@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 
 const StyledIconButton = styled(IconButton)(({ theme }) => ({
-  color: "#ED6E52",
+  color: theme.palette.primary.main,
   borderRadius: 0,
   padding: "0",
   margin: 0,
@@ -19,7 +19,7 @@ const StyledIconButton = styled(IconButton)(({ theme }) => ({
 
 export default function EditButton(props) {
   return (
-    <StyledIconButton {...props} disableRipple={true}>
+    <StyledIconButton {...props} disableRipple>
       <EditIcon className="editIcon" />
     </StyledIconButton>
   );

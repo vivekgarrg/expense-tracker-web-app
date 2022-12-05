@@ -72,7 +72,7 @@ export default function Tracker() {
         <MonthFilter value={month} onChange={(e) => setMonth(e.target.value)} />
         <Box className="one">
           <Typography sx={{ fontWeight: "600" }}>
-            Total: &nbsp; ₹{total}
+            Total: &nbsp; <span style={{ color: "#ED6E52" }}>₹{total}</span>
           </Typography>
           |
           <Typography
