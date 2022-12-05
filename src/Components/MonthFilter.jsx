@@ -8,19 +8,18 @@ import styled from "@emotion/styled";
 //Styling
 const Search = styled(Box)(({ theme }) => ({
   alignSelf: "center",
-  marginLeft: "1rem",
   "& .MuiOutlinedInput-input": {
-    width: "100px",
     fontSize: "12px",
     background: "#FFFFFF",
     borderRadius: "4px",
     height: "1.8rem",
-    color: "#222222",
+    width: "7rem",
+    color: theme.palette.primary.main,
     margin: 0,
     padding: 0,
-  },
-  "& .search-icon": {
-    color: "#ED6E52",
+    [theme.breakpoints.down("sm")]: {
+      width: "1rem",
+    },
   },
 }));
 

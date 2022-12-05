@@ -1,8 +1,16 @@
 import React, { useState } from "react";
 import { Box } from "@mui/system";
-import { Button, Stack, TextField } from "@mui/material";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from "@mui/material";
 import { postExpense, updateExpense } from "../api/componentAction";
-import { useNavigate } from "react-router-dom";
+import { ExpenseContext } from "../Context/ExpenseContext";
 
 export default function ExpenseForm({
   update,
@@ -10,36 +18,57 @@ export default function ExpenseForm({
   remarks: rmks,
   ammount,
   date: dt,
+  payment_mode: payment,
   id,
 }) {
   const [amount, setAmount] = useState(update ? amnt || ammount : "");
   const [date, setDate] = useState(update ? dt : "");
   const [remarks, setRemarks] = useState(update ? rmks : "");
+  const [payment_mode, setPaymentMode] = useState(
+    update && payment ? payment : "upi"
+  );
+
+  const { setShowModal, setSnackBar } = React.useContext(ExpenseContext);
+
+  const handleError = (data) => {
+    if (data)
+      setSnackBar({ open: true, message: "Success", severity: "success" });
+    else
+      setSnackBar({
+        open: true,
+        message: "Something Went Wrong...",
+        severity: "error",
+      });
+    setShowModal({ open: false });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data } = await postExpense(amount, date, remarks);
+    const { data } = await postExpense(amount, date, remarks, payment_mode);
     if (data) {
       setAmount("");
       setDate("");
       setRemarks("");
     }
+    handleError(data);
   };
-
-  const navigate = useNavigate();
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     e.preventDefault();
-    const { data } = await updateExpense(id, amount, date, remarks);
-    if (data) {
-      navigate("/");
-    }
+    const { data } = await updateExpense(
+      id,
+      amount,
+      date,
+      remarks,
+      payment_mode
+    );
     if (data) {
       setAmount("");
       setDate("");
       setRemarks("");
     }
+    handleError(data);
   };
   return (
     <Box sx={{ p: 2 }}>
@@ -66,6 +95,23 @@ export default function ExpenseForm({
             fullWidth
             required
           />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              Payment payment_mode
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Payment payment_mode"
+              defaultValue="upi"
+              required
+              value={payment_mode}
+              onChange={(e) => setPaymentMode(e.target.value)}
+            >
+              <MenuItem value={"upi"}>UPI</MenuItem>
+              <MenuItem value={"cash"}>CASH</MenuItem>
+            </Select>
+          </FormControl>
           <Button
             variant="contained"
             type="submit"

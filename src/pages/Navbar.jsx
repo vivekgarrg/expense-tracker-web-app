@@ -14,10 +14,10 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 
 const drawerWidth = 240;
-const navItems = ["Total", "About", "Contact"];
+const navItems = ["Borrow"];
 
 function NavBar(props) {
   const { window } = props;
@@ -53,7 +53,10 @@ function NavBar(props) {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar component="nav" sx={{ maxHeight: "10vh", bgcolor: "#ab47bc" }}>
+      <AppBar
+        component="nav"
+        sx={{ maxHeight: "10vh", bgcolor: "primary.main" }}
+      >
         <Toolbar>
           <IconButton
             color="inherit"
@@ -69,10 +72,12 @@ function NavBar(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            <IconButton sx={{ color: "white" }}>
-              <CreditCardIcon />
-            </IconButton>
-            Expense Mania
+            <Link style={{ textDecoration: "none", color: "white" }} to="/">
+              <IconButton sx={{ color: "white" }}>
+                <CreditCardIcon />
+                Expense Mania
+              </IconButton>
+            </Link>
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             {navItems.map((item) => (
